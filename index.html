@@ -6,7 +6,10 @@
   <script src="http://dimplejs.org/dist/dimple.v2.3.0.min.js"></script>
   <style>
     h2 {
-        text-align: center;
+      text-align: center;
+    }
+    h3 {
+      text-align: center;
     }
   </style>
     <script type="text/javascript">
@@ -25,10 +28,14 @@
             .append('h2')
             .text('Titanic survival rate');
 
-          var svg = d3.select("body")
-            .append("svg")
-              .attr("width", width + margin)
-              .attr("height", height + margin)
+          d3.select('body')
+            .append('h3')
+            .text('Passenger survivors per class');
+
+          var svg = d3.select('body')
+            .append('svg')
+              .attr('width', width + margin)
+              .attr('height', height + margin)
             .append('g')
                 .attr('class','chart');
 
@@ -64,10 +71,14 @@
           // Create X axis
           var x = myChart.addCategoryAxis('x', ['Pclass_new', 'Sex']);
           // Add label to the axis
-          x.title = 'Passenger class and gender';
+          x.title = 'Passenger class/gender';
           // Change order of gender and class
-          x.addGroupOrderRule(['male', 'female']);
-          x.addOrderRule(['Lower', 'Middle', 'Upper']);
+          // x.addGroupOrderRule(['male', 'female']);
+          // x.addOrderRule(['Lower', 'Middle', 'Upper']);
+          // The two lines above were also working.
+          // The two lines below are formatted properly
+          x.addGroupOrderRule('Sex', true);
+          x.addOrderRule('Pclass_new');
 
 
           // Create Y axis
@@ -83,35 +94,35 @@
           // Get the shape as a d3 selection
           var s = d3.select(shape),
             rect = {
-              x: parseFloat(s.attr("x")),
-              y: parseFloat(s.attr("y")),
-              width: parseFloat(s.attr("width")),
-              height: parseFloat(s.attr("height"))
+              x: parseFloat(s.attr('x')),
+              y: parseFloat(s.attr('y')),
+              width: parseFloat(s.attr('width')),
+              height: parseFloat(s.attr('height'))
             };
             // Only label bars where the text can fit
             if (rect.height >= 8) {
               // Add a text label for the value
-              svg.append("text")
+              svg.append('text')
                 // Position in the centre of the shape (vertical position is
                 // manually set due to cross-browser problems with baseline)
-                .attr("x", rect.x + rect.width / 2)
-                .attr("y", rect.y + rect.height / 2 + 3.5)
+                .attr('x', rect.x + rect.width / 2)
+                .attr('y', rect.y + rect.height / 2 + 3.5)
                 // Centre align
-                .style("text-anchor", "middle")
-                .style("font-size", "10px")
-                .style("font-family", "sans-serif")
+                .style('text-anchor', 'middle')
+                .style('font-size', '10px')
+                .style('font-family', 'sans-serif')
                 // Make it a little transparent to tone down the black
-                .style("opacity", 0.6)
+                .style('opacity', 0.6)
                 // Prevent text cursor on hover and allow tooltips
-                .style("pointer-events", "none")
+                .style('pointer-events', 'none')
                 // Format the number
                 .text(data.yValue);
             }
           };
 
           // Colour-coding the passenger status:
-          myChart.assignColor('1', '#80B1D3', '#80B1D3', '.7');
-          myChart.assignColor('0', '#FB8072', '#FB8072', '.7');
+          myChart.assignColor('Survived', '#5ab4ac', '#5ab4ac', '.7');
+          myChart.assignColor('Deceased', '#fb8072', '#fb8072', '.7');
 
           // Add a legend
           var myLegend = myChart.addLegend(400, 30, 430, 20, 'right');
@@ -150,11 +161,107 @@
           myChart.draw();
           // Actually, rotating the lower labels
           // Isn't exactly a good idea...
-          // x.shapes.selectAll("text")
-          // .attr("transform", "rotate(-45)");
-          y.shapes.selectAll("text")
-          .attr("transform", "rotate(-45)");
+          // x.shapes.selectAll('text')
+          // .attr('transform', 'rotate(-45)');
+          y.shapes.selectAll('text')
+          .attr('transform', 'rotate(-45)');
+
         };
+
+        function draw2(data) {
+      
+
+          d3.select('body')
+            .append('h3')
+            .text('Passenger survivors per age');
+
+      /*
+        D3.js setup code
+      */
+
+          'use strict';
+          var margin = 70,
+              width = 920 - margin,
+              height = 720 - margin;
+
+          var svg = d3.select('body')
+            .append('svg')
+              .attr('width', width + margin)
+              .attr('height', height + margin)
+            .append('g')
+                .attr('class','chart');
+
+          // Create new data columns:
+          data.forEach(function(d) {
+            d['Pclass'] = +d['Pclass'];
+            if (d['Pclass'] === 1) {
+              d['Pclass_new'] = 'Upper';
+            } else if (d['Pclass'] === 2) {
+              d['Pclass_new'] = 'Middle';
+            } else {
+              d['Pclass_new'] = 'Lower';
+            }
+          });
+
+          data.forEach(function(d) {
+            d['Survived'] = +d['Survived'];
+            if (d['Survived'] === 0) {
+              d['Survived_new'] = 'Deceased';
+            } else {
+              d['Survived_new'] = 'Survived';
+            }
+          });
+          // ************
+
+
+
+          // ***********************
+          // Setting up the second chart
+          // ***********************
+
+
+
+      /*
+        Dimple.js Chart construction code
+      */
+
+          var myChart1 = new dimple.chart(svg, data);
+          myChart1.setBounds(90, 70, 750, 550);
+
+          // Create X axis
+          var x = myChart1.addCategoryAxis('x', 'Age');
+          // Add label to the axis
+          x.title = 'Passenger age';
+          // x.addGroupOrderRule('Year');
+          // x.addOrderRule('Year');
+          // x.tickFormat = 5;
+
+
+          var y = myChart1.addMeasureAxis('y', 'Survived_new');
+          y.showPercent = true;
+          y.title = 'Percentage of survivors';
+
+          var mySeries = myChart1.addSeries(['Survived_new'], dimple.plot.line, [x,y]);
+          mySeries.aggregate = dimple.aggregateMethod.count;
+          mySeries.data = dimple.filterData(data, 'Pclass_new', ['Lower'])
+          mySeries.lineMarkers = true;
+
+          var mySeries = myChart1.addSeries(['Survived_new'], dimple.plot.line, [x,y]);
+          mySeries.aggregate = dimple.aggregateMethod.count;
+          mySeries.data = dimple.filterData(data, 'Pclass_new', ['Middle'])
+          mySeries.lineMarkers = true;
+
+          var mySeries = myChart1.addSeries(['Survived_new'], dimple.plot.line, [x,y]);
+          mySeries.aggregate = dimple.aggregateMethod.count;
+          mySeries.data = dimple.filterData(data, 'Pclass_new', ['Upper'])
+          mySeries.lineMarkers = true;
+
+          myChart1.addSeries("Pclass_new", dimple.plot.line);;
+          myChart1.addLegend(400, 30, 430, 20, "right");
+          myChart1.draw();
+
+
+        }
       </script>
   </head>
 <body>
@@ -164,7 +271,8 @@
       Use D3 (not dimple.js) to load the CSV file
       and pass the contents of it to the draw function
       */
-    d3.csv("data.csv", draw);
+    d3.csv('data.csv', draw);
+    d3.csv('data.csv', draw2)
     </script>
   </div>
 </body>
