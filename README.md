@@ -25,7 +25,8 @@ Project for the Udacity course in data visualization
 - X axis, cleaning and setting up time intervals: https://stackoverflow.com/questions/25312940/cleaning-axis-in-dynamic-charts-in-dimple-js/25313793#25313793
 3. Line graphs:
 - https://discussions.udacity.com/t/titanic-dataset-how-to-colour-different-line-plots-in-dimple-js/323610
-
+4. Adding bins to the csv file with python: https://discussions.udacity.com/t/titanic-age-data-use-of-pd-cut-causes-a-warning/172477
+5. Legend matters: https://discussions.udacity.com/t/create-a-legend-for-a-dimple-plot-with-d3-js-lines-and-adding-series-to-a-dimple-plot/193070/7
 
 
 
