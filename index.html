@@ -8,9 +8,6 @@
     h2 {
         text-align: center;
     }
-    h3 {
-        text-align: center;
-    }
   </style>
     <script type="text/javascript">
       function draw(data) {
@@ -22,14 +19,11 @@
           // "use strict";
           var margin = 50,
               width = 730 - margin,
-              height = 420 - margin;
+              height = 500 - margin;
 
           d3.select('body')
             .append('h2')
-            .text('Types of debt');
-          d3.select('body')
-            .append('h3')
-            .text('The total owed by the average U.S. household, by debt type');
+            .text('Titanic survival rate');
 
           var svg = d3.select("body")
             .append("svg")
@@ -43,8 +37,8 @@
       */
 
           var myChart = new dimple.chart(svg, data);
-          var x = myChart.addMeasureAxis('x', 'value');
-          var y = myChart.addCategoryAxis('y', 'type');
+          var x = myChart.addMeasureAxis('x', 'Age');
+          var y = myChart.addCategoryAxis('y', 'Survived');
           myChart.addSeries(null, dimple.plot.bar);
           myChart.draw();
           x.shapes.selectAll("text")
