@@ -3,11 +3,11 @@ Project for the Udacity course in data visualization
 
 ## Summary
 
-
+The Titanic dataset presents information about the passangers of Titanic, across twelve variables. As I had basic acquaintance with the dataset prior to undertaking this assignment, my interests in it were quite specific, as I knew that there was disparity in the percentage of passengers who died from the perspecive of class, gender, and age.
 
 ## Design
 
-
+I decided to present two charts in the project. The first one is a graphic presentation of 
 
 ## Feedback
 
